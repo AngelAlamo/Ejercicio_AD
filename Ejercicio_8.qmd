@@ -4,5 +4,78 @@ format: html
 editor: visual
 ---
 
+## Problema
+
+```{r, warning = FALSE, include = FALSE}
+library(tidyverse)
+set.seed(1917)
+```
+
+
+Con algunos programas de ordenador sólo se pueden generar muestras normales univariantes. Supongamos, sin embargo, que deseamos generar una muestra de un vector bidimensional $\textbf{Y} = (Y_1, Y_2)'$ con distribución $N_2( \mathbf{\mu}, \mathbf{\Sigma} )$, donde
+
+$$
+\mathbf{\mu} = (\mu_1, \mu_2)
+$$
+
+
+$$
+\mathbf{\Sigma} = \begin{pmatrix}
+\sigma_{11} & \rho \sqrt{\sigma_{11}} \sqrt{\sigma_{22}} \\
+\rho \sqrt{\sigma_{11}} \sqrt{\sigma_{22}} & \sigma_{22}
+\end{pmatrix}
+$$
+y $\rho$ denota la correlación entre $Y_1$ e $Y_2$. Entonces podemos recurrir al procedimiento que explicamos a continuación.
+
+
+
+  a) genera observaciones normales univariantes e independientes entre sí, y para un tamaño muestral $n$, a elegir, genérase una muestra
+  
+  
+  
+  \begin{equation}
+    \begin{pmatrix}
+    x_{11} & x_{12} \\
+    
+    x_{21} & x_{22} \\
+    
+    \vdots & \vdots \\
+    
+    x_{n1} & x_{n2}
+    
+    
+    \end{pmatrix}
+  \end{equation}
+  
+
+  de un vector $\textbf{X} = (X_1, X_2)'$ con distribución $N_2(\textbf{0}, \textbf{I})$.
+
+  b) Ahora consideremos las sigientes transformaciones lineales de $\textbf{X}$
+  
+$$
+Y_1 = \mu_1 + \sqrt{\sigma_{11}} X_1 \\
+Y_2 = \mu_2 + \sqrt{\sigma_{22}}(\rho X_1 + \sqrt{1 - \rho^2}X_2)
+$$
+
+  Demuéstrese que $\textbf{Y} = (Y_1, Y_2)'$ sigue una distribución $N_2(\mathbf{\mu}, \mathbf{\Sigma})$.
+  
+  c) Elíjanse unos valores concretos para $\mathbf{\mu}, \sigma_{11}, \sigma_{22}$ y $\rho$. Utilizando la combinación lineal del apartado (b), gemérase con R una muestra de $\textbf{Y}$ a partir de la muestra del apartado (a).
+  
+  
+## Resolución
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
