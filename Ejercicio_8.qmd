@@ -2,15 +2,17 @@
 title: "Ejercicio 8"
 format: html
 editor: visual
+execute: 
+  echo: false
 ---
 
 ## Problema
 
-```{r, warning = FALSE, include = FALSE}
+```{r librerias y semilla, warning = FALSE, include = FALSE}
 library(tidyverse)
+library(mvnormtest)
 set.seed(1917)
 ```
-
 
 Con algunos programas de ordenador sólo se pueden generar muestras normales univariantes. Supongamos, sin embargo, que deseamos generar una muestra de un vector bidimensional $\textbf{Y} = (Y_1, Y_2)'$ con distribución $N_2( \mathbf{\mu}, \mathbf{\Sigma} )$, donde
 
@@ -18,22 +20,17 @@ $$
 \mathbf{\mu} = (\mu_1, \mu_2)
 $$
 
-
 $$
 \mathbf{\Sigma} = \begin{pmatrix}
 \sigma_{11} & \rho \sqrt{\sigma_{11}} \sqrt{\sigma_{22}} \\
 \rho \sqrt{\sigma_{11}} \sqrt{\sigma_{22}} & \sigma_{22}
 \end{pmatrix}
-$$
-y $\rho$ denota la correlación entre $Y_1$ e $Y_2$. Entonces podemos recurrir al procedimiento que explicamos a continuación.
+$$ y $\rho$ denota la correlación entre $Y_1$ e $Y_2$. Entonces podemos recurrir al procedimiento que explicamos a continuación.
 
+a)  genera observaciones normales univariantes e independientes entre sí, y para un tamaño muestral $n$ a elegir, genérese una muestra
 
-
-  a) genera observaciones normales univariantes e independientes entre sí, y para un tamaño muestral $n$, a elegir, genérase una muestra
-  
-  
-  
-  \begin{equation}
+```{=tex}
+\begin{equation}
     \begin{pmatrix}
     x_{11} & x_{12} \\
     
@@ -46,36 +43,93 @@ y $\rho$ denota la correlación entre $Y_1$ e $Y_2$. Entonces podemos recurrir a
     
     \end{pmatrix}
   \end{equation}
-  
+```
+de un vector $\textbf{X} = (X_1, X_2)'$ con distribución $N_2(\textbf{0}, \textbf{I})$.
 
-  de un vector $\textbf{X} = (X_1, X_2)'$ con distribución $N_2(\textbf{0}, \textbf{I})$.
+b)  Ahora consideremos las sigientes transformaciones lineales de $\textbf{X}$
 
-  b) Ahora consideremos las sigientes transformaciones lineales de $\textbf{X}$
-  
 $$
-Y_1 = \mu_1 + \sqrt{\sigma_{11}} X_1 \\
-Y_2 = \mu_2 + \sqrt{\sigma_{22}}(\rho X_1 + \sqrt{1 - \rho^2}X_2)
+\begin{align}
+Y_1 = & \mu_1 + \sigma_{11} X_1 \\
+Y_2 = & \mu_2 + \sigma_{22}(\rho X_1 + \sqrt{1 - \rho^2}X_2)
+\end{align}
 $$
 
-  Demuéstrese que $\textbf{Y} = (Y_1, Y_2)'$ sigue una distribución $N_2(\mathbf{\mu}, \mathbf{\Sigma})$.
-  
-  c) Elíjanse unos valores concretos para $\mathbf{\mu}, \sigma_{11}, \sigma_{22}$ y $\rho$. Utilizando la combinación lineal del apartado (b), gemérase con R una muestra de $\textbf{Y}$ a partir de la muestra del apartado (a).
-  
-  
+Demuéstrese que $\textbf{Y} = (Y_1, Y_2)'$ sigue una distribución $N_2(\mathbf{\mu}, \mathbf{\Sigma})$.
+
+c)  Elíjanse unos valores concretos para $\mathbf{\mu}, \sigma_{11}, \sigma_{22}$ y $\rho$. Utilizando la combinación lineal del apartado (b), genérese con R una muestra de $\textbf{Y}$ a partir de la muestra del apartado (a).
+
 ## Resolución
 
+genera observaciones normales univariantes e independientes entre sí, y para un tamaño muestral $n$ a elegir, genérese una muestra de un vector $\textbf{X} = (X_1, X_2)'$ con distribución $N_2(\textbf{0}, \textbf{I})$.
 
+Vamos a generar dos vectores de dimensión $n = 10$ que signa distribuciones $N(0,1)$ e independientes entre sí con el comando `rnorm`.
 
+Luego, combinamos los dos vectores en una matriz y tenemos por resultado:
 
+```{r apartado a}
+n = 10
+  
+X1 <- n %>% rnorm
+X2 <- n %>% rnorm
 
+X <- cbind(X1, X2)
 
+X
+```
 
+Esta muestra sigue una distribución $N_2(\textbf{0}, \textbf{I})$, ya que las columnas siguen distribuciones $N(0,1)$ y son independientes.
 
+Ahora, vamos a elegir valores para $\mathbf{\mu}, \sigma_{11}, \sigma_{22}$ y $\rho$. Por ejemplo:
 
+$$
+\begin{align}
+\mathbf{\mu} = & (10, 20)   \\
+\sigma_{11} = & 2           \\
+\sigma_{22} = & 4           \\
+\rho = & 0.7
+\end{align}
+$$
 
+```{r apartado c variables}
+mu1 = 10
+mu2 = 20
+sigma1 = 2
+sigma2 = 4
+rho = 0.7
+mu = c(mu1, mu2)
+```
 
+Realicemos las combinaciones lineales (3.2) y juntemos los dos vectores en una matriz.
 
+```{r apartado c combinacion lineal}
+Y1 = mu1 + sigma1 * X1
+Y2 = mu2 + sigma2*(rho*X1 + sqrt(1-rho^2)*X2)
 
+Y <- cbind(Y1, Y2)
+Y
+```
 
+Veamos que esta matriz sigue una distribución $N_2(\mathbf{\mu}, \mathbf{\Sigma})$. Para ello, realizaremos el test de Shapiro-Wilk.
 
+```{r apartado b}
+mshapiro.test(t(Y))
+```
 
+Vemos que el p-valor del test de Shapiro-Wilk es $0.5004$, que indica que no hay evidencia estadística suficiente para rechazar la hipótesis nula, lo que sugiere que los datos pueden provenir de una población con una distribución normal.
+
+Como la muestra es pequeña (sólo 10 observaciones), vamos a realizar el mismo test para una muestra de 5000 observaciones, que es el máximo que nos permite la función `mshapiro.test`de R.
+
+```{r apartado b con mas muestras}
+A1 <- 5000 %>% rnorm
+A2 <- 5000 %>% rnorm
+
+B1 = mu1 + sigma1 * A1
+B2 = mu2 + sigma2*(rho*A1 + sqrt(1-rho^2)*A2)
+
+B <- cbind(B1, B2)
+
+mshapiro.test(t(B))
+```
+
+Ahora, vemos que el p-valor es $0.9839$, que es cercano a $1$, por lo que tenemos suficiente evidencia estadística para afirmar que $\mathbf{Y}$ sigue una distribución $N_2(\mathbf{\mu}, \mathbf{\Sigma})$.
