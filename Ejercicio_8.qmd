@@ -61,9 +61,7 @@ c)  Elíjanse unos valores concretos para $\mathbf{\mu}, \sigma_{11}, \sigma_{22
 
 ## Resolución
 
-genera observaciones normales univariantes e independientes entre sí, y para un tamaño muestral $n$ a elegir, genérese una muestra de un vector $\textbf{X} = (X_1, X_2)'$ con distribución $N_2(\textbf{0}, \textbf{I})$.
-
-Vamos a generar dos vectores de dimensión $n = 10$ que signa distribuciones $N(0,1)$ e independientes entre sí con el comando `rnorm`.
+Vamos a generar dos vectores de dimensión $n = 10$ que sigan distribuciones $N(0,1)$ y que sean independientes entre sí con el comando `rnorm`.
 
 Luego, combinamos los dos vectores en una matriz y tenemos por resultado:
 
@@ -87,7 +85,7 @@ $$
 \mathbf{\mu} = & (10, 20)   \\
 \sigma_{11} = & 2           \\
 \sigma_{22} = & 4           \\
-\rho = & 0.7
+\rho = & 0.7 \Leftrightarrow \sigma_{12} = 0.7 * \sigma_{11} * \sigma_{22}
 \end{align}
 $$
 
@@ -100,7 +98,7 @@ rho = 0.7
 mu = c(mu1, mu2)
 ```
 
-Realicemos las combinaciones lineales (3.2) y juntemos los dos vectores en una matriz.
+Realicemos las combinaciones lineales presentadas en el apartado (b) y juntemos los dos vectores obtenidos en una matriz.
 
 ```{r apartado c combinacion lineal}
 Y1 = mu1 + sigma1 * X1
@@ -133,3 +131,5 @@ mshapiro.test(t(B))
 ```
 
 Ahora, vemos que el p-valor es $0.9839$, que es cercano a $1$, por lo que tenemos suficiente evidencia estadística para afirmar que $\mathbf{Y}$ sigue una distribución $N_2(\mathbf{\mu}, \mathbf{\Sigma})$.
+
+
