@@ -170,3 +170,4 @@ B <- cbind(B1, B2)
 mshapiro.test(t(B))
 ```
 
+
