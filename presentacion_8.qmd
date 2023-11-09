@@ -95,6 +95,7 @@ X
 
 Esta muestra sigue una distribución $N_2(\textbf{0}, \textbf{I})$, ya que las columnas siguen distribuciones $N(0,1)$ y son independientes.
 
+
 ## Resolución
 
 Ahora, vamos a elegir valores para $\mathbf{\mu}, \sigma_{11}, \sigma_{22}$ y $\rho$. Por ejemplo:
