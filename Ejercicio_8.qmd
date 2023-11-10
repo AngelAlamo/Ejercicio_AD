@@ -133,3 +133,4 @@ mshapiro.test(t(B))
 Ahora, vemos que el p-valor es $0.9839$, que es cercano a $1$, por lo que tenemos suficiente evidencia estadística para afirmar que $\mathbf{Y}$ sigue una distribución $N_2(\mathbf{\mu}, \mathbf{\Sigma})$.
 
 
+Para ver el código del estudio, visite [este repositorio de GitHub.](https://github.com/AngelAlamo/Ejercicio_AD)
